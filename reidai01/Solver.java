@@ -1,33 +1,26 @@
 public class Solver {
-	double[] usedPositionX = new double[Gold.EvalMax];
-	double[] usedPositionY = new double[Gold.EvalMax];
+	static double[] usedPositionX = new double[Gold.EvalMax];
+	static double[] usedPositionY = new double[Gold.EvalMax];
+	static double value = -1.0;
+	static double best = Double.MIN_VALUE;
+	static double[] bestp = new double[2];
 
 	public static void answer() {
-		double value = -1.0;
-		double best = Double.MIN_VALUE;
 		double[] p = new double[2];
-		double[] bestp = new double[2];
 		int middle = Gold.EvalMax;
 
 		for(int i=0; i<Gold.EvalMax; i++) {
 			if (i <= middle) {
-				value = randomRequest();
+				randomRequest();
 			} else {
-				value = request();
+				request();
 			}
-
 			// System.out.println(i + "," + value);
-
-			if (best < value) {
-				best = value;
-				bestp[0] = p[0];
-				bestp[1] = p[1];
-			}
 		}
 		Gold.submit(bestp);
 	}
 
-	private static double randomRequest() {
+	private static void randomRequest() {
 		// randomで座標の作成
 		final double MIN = -1.0e6;
 		final double MAX = 1.0e6;
@@ -35,17 +28,27 @@ public class Solver {
 		position[0] = MIN + (MAX-MIN)*Math.random();
 		position[1] = MIN + (MAX-MIN)*Math.random();
 		
-		return getEvaluateFromPostion(position);
+		value = getEvaluateFromPostion(position);
+		if (best < value) {
+			best = value;
+			bestp[0] = position[0];
+			bestp[1] = position[1];
+		}
 	}
 
-	private static double request() {
+	private static void request() {
 		double[] position = new double[2];
 		final double MIN = -1.0e6;
 		final double MAX = 1.0e6;
 		position[0] = MIN + (MAX-MIN)*Math.random();
 		position[1] = MIN + (MAX-MIN)*Math.random();
 
-		return getEvaluateFromPostion(position);
+		value = getEvaluateFromPostion(position);
+		if (best < value) {
+			best = value;
+			bestp[0] = position[0];
+			bestp[1] = position[1];
+		}
 	}
 
 	private static boolean checkPosition() {
