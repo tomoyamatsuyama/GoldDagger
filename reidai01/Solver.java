@@ -1,10 +1,13 @@
+import java.util.*;
+
 public class Solver {
 	static double[] usedPositionX = new double[Gold.EvalMax];
 	static double[] usedPositionY = new double[Gold.EvalMax];
 	static double value = -1.0;
 	static double best = Double.MIN_VALUE;
 	static double[] bestp = new double[2];
-
+	static ArrayList<ArrayList<Double>> positions = new ArrayList<>();
+ 
 	public static void answer() {
 		double[] p = new double[2];
 		int middle = Gold.EvalMax;
@@ -17,7 +20,14 @@ public class Solver {
 			}
 			// System.out.println(i + "," + value);
 		}
+		printPositions();
 		Gold.submit(bestp);
+	}
+
+	private static void printPositions() {
+		for (ArrayList<Double> position: positions) {
+			System.out.printf("x: %f, y: %f", position.get(0), position.get(1));
+		}
 	}
 
 	private static void randomRequest() {
@@ -51,12 +61,20 @@ public class Solver {
 		}
 	}
 
+	private static void addPosition(double[] position) {
+		ArrayList<Double> posi = new ArrayList<>();
+		posi.add(position[0]);
+		posi.add(position[1]);
+		positions.add(posi);
+	}
+
 	private static boolean checkPosition() {
 		return false;
 	}
 
 	private static double getEvaluateFromPostion(double[] position) {
 		// 座標を受け取り、scoreを返す関数
+		addPosition(position);
 		return Gold.evaluate(position);
 	} 
 }
